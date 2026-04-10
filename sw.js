@@ -1,21 +1,28 @@
 const CACHE_NAME = 'lista-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json'
+  '/Shopping_List/',
+  '/Shopping_List/index.html',
+  '/Shopping_List/manifest.json',
+  '/Shopping_List/icon-192.png',
+  '/Shopping_List/icon-512.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+      .then(cache => {
+        console.log('Caching files');
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then(response => response || fetch(event.request))
+      .then(response => {
+        return response || fetch(event.request);
+      })
   );
 });
 
@@ -25,6 +32,7 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cache => {
           if (cache !== CACHE_NAME) {
+            console.log('Deleting old cache:', cache);
             return caches.delete(cache);
           }
         })
