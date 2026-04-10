@@ -705,12 +705,18 @@ document.getElementById('newListModal').addEventListener('click', e => { if (e.t
 render();
 </script>
 <script>
-  // Register Service Worker for PWA
+  // Register Service Worker
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('SW registered:', reg))
-        .catch(err => console.log('SW failed:', err));
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/Shopping_List/sw.js', {
+        scope: '/Shopping_List/'
+      })
+      .then(function(registration) {
+        console.log('Service Worker registered successfully:', registration);
+      })
+      .catch(function(error) {
+        console.log('Service Worker registration failed:', error);
+      });
     });
   }
 </script>
